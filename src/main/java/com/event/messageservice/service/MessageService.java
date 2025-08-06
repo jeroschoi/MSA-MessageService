@@ -7,6 +7,8 @@ import com.event.messageservice.exception.MessageErrorCode;
 import com.event.messageservice.exception.MessageException;
 import com.event.messageservice.mapper.MessageMapper;
 import com.event.messageservice.repository.MessageRespository;
+import com.event.messageservice.service.kafka.KafkaProducerService;
+import com.event.messageservice.service.kafka.KafkaTopic;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,7 @@ import java.util.List;
 public class MessageService {
 
     private final MessageRespository repository;
+    private final KafkaProducerService kafkaService;
 
 
     /**
@@ -79,9 +82,11 @@ public class MessageService {
             messageHistory.setVisible(false);
             repository.save(messageHistory);
             log.info("메시지 이력 삭제 - 회원 ID: {}, 메시지 ID: {}", memberId, messageHistory.getId());
+            kafkaService.sendMessage(KafkaTopic.MESSAGE_SUCCESS, messageHistory);
         });
         if (result.isEmpty()) {
             log.error("메시지 이력 삭제 실패 - 회원 ID: {}", memberId);
+            kafkaService.sendMessage(KafkaTopic.MESSAGE_FAIL, memberId);
             return 0;
         }
         log.info("메시지 이력 삭제 완료 - 회원 ID: {} 비활성화 개수 : {}", memberId, result.size());
