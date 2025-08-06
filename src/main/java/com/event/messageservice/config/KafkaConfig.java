@@ -7,6 +7,7 @@ import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.*;
 
 import java.util.HashMap;
@@ -45,6 +46,17 @@ public class KafkaConfig {
    public KafkaTemplate<String, Object> kafkaProducerTemplate() {
        return new KafkaTemplate<>(kafkaProducerFactory());
    }
+
+    /**
+     * 발행한 카프카 토픽을 읽어오기 위한 Configuration
+     * 발행한 토픽 테스트 시 활성화
+     */
+//    @Bean
+//    public ConcurrentKafkaListenerContainerFactory<String, Object> kafkaListenerContainerFactory() {
+//        ConcurrentKafkaListenerContainerFactory<String, Object> factory = new ConcurrentKafkaListenerContainerFactory<>();
+//        factory.setConsumerFactory(kafkaConsumerFactory());
+//        return factory;
+//    }
 }
 
 

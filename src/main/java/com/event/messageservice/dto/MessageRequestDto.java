@@ -15,6 +15,9 @@ import lombok.Setter;
 @Builder
 public class MessageRequestDto {
 
+    @Schema(description = "트랜잭션 ID", example = "a1b2c3d4-e5f6-7890-1234-567890abcdef")
+    private String traceId; // 트랜잭션 ID 필드 추가
+
     @Schema(description = "회원 ID", example = "member123")
     @NotBlank(message = "회원 ID는 필수입니다.")
     private String memberId;
@@ -39,7 +42,8 @@ public class MessageRequestDto {
     @Override
     public String toString() {
         return "MessageRequestDto{" +
-                "memberId='" + memberId + '\'' +
+                "traceId='" + traceId + '\'' +
+                ", memberId='" + memberId + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", content='" + content + '\'' +
                 ", messageType=" + messageType +
